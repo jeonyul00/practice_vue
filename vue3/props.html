@@ -1,0 +1,121 @@
+<!-- <div id="app">
+  <app-header v-bind:title="appTitle"></app-header>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+  const { createApp } = Vue;
+  createApp({
+    data() {
+      return {
+        appTitle: "props 넘기기",
+      };
+    },
+    components: {
+      "app-header": {
+        template: `<h1>{{title}}</h1>`,
+        props: ["title"],
+      },
+    },
+  }).mount("#app");
+</script>
+
+<div id="app">
+  <app-header title="Hello, Vue!"></app-header>
+</div> -->
+
+<!-- 컴포지션 api -->
+<!-- 
+<div id="app">
+  <app-header :자식이받는프롭스="부모가주는프롭스"></app-header>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+  const { createApp, defineComponent, ref } = Vue;
+
+  // 자식 컴포넌트 정의
+  const AppHeader = defineComponent({
+    props: {
+      자식이받는프롭스: {
+        type: String,
+        required: true,
+      },
+    },
+    setup(props) {
+      // props를 받아 템플릿에서 사용 가능
+      return {
+        title: props.자식이받는프롭스,
+      };
+    },
+    template: `<h1>{{ title }}</h1>`,
+  });
+
+  // 부모 컴포넌트 정의
+  const App = defineComponent({
+    components: {
+      AppHeader, // 자식 컴포넌트 등록
+    },
+    setup() {
+      // 반응형 데이터 정의
+      const 부모가주는프롭스 = ref("props 넘기기");
+      return {
+        부모가주는프롭스,
+      };
+    },
+  });
+
+  // Vue 애플리케이션 생성 및 마운트
+  createApp(App).mount("#app");
+</script> -->
+
+<!-- practice -->
+<!-- 리액트보다 복잡스러운거 같은데... -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="main">
+      <children :result="response"></children>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const { createApp, defineComponent, ref } = Vue;
+    const children = defineComponent({
+      props: {
+        result: {
+          type: String,
+        },
+      },
+
+      setup({ props }) {
+        return props;
+      },
+      template: `{{props}}`,
+    });
+
+    const App = defineComponent({
+      components: { Children },
+      setup() {
+        const response = ref("11");
+        return {
+          response,
+        };
+      },
+      template: `
+        <div>
+          <h1>Parent Component</h1>
+          <children :result="response"></children>
+        </div>
+      `,
+    });
+
+    createApp(App).mount("#main");
+  </script>
+</html>

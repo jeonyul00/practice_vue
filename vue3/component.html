@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Component Example</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script type="module">
+      import {
+        createApp,
+        defineComponent,
+      } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+
+      // 자식 컴포넌트 정의
+      const MyComponent = defineComponent({
+        props: {
+          title: {
+            type: String,
+            required: true,
+          },
+        },
+        template: `
+          <div>
+            <h2>{{ title }}</h2>
+            <p>This is a reusable component.</p>
+          </div>
+        `,
+      });
+
+      // 메인 애플리케이션 정의 및 컴포넌트 사용
+      const App = defineComponent({
+        components: {
+          MyComponent,
+        },
+        setup() {
+          const message = "Hello from MyComponent!";
+          return {
+            message,
+          };
+        },
+        template: `
+          <div>
+            <h1>Vue 3 Component Example</h1>
+            <MyComponent :title="message" />
+          </div>
+        `,
+      });
+
+      // 애플리케이션 마운트
+      createApp(App).mount("#app");
+    </script>
+  </body>
+</html>
