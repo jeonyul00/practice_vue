@@ -1,0 +1,85 @@
+<!--
+<div id="app">
+  자식 컴포넌트에서 refresh 이벤트를 받아 처리
+  <app-contents @refresh="handleRefresh"></app-contents>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<script>
+  const { createApp } = Vue;
+
+  // 자식 컴포넌트 정의
+  const appContents = {
+    template: `
+        <p>
+            <button @click="sendEvent">갱신</button>
+        </p>
+    `,
+    methods: {
+      sendEvent() {
+        // 상위 컴포넌트로 이벤트 전파
+        this.$emit("refresh");
+      },
+    },
+  };
+
+  // 부모 컴포넌트 정의
+  createApp({
+    components: {
+      "app-contents": appContents,
+    },
+    methods: {
+      handleRefresh() {
+        alert("Refresh 이벤트가 발생했습니다!");
+      },
+    },
+  }).mount("#app");
+</script>
+
+-->
+
+<!-- 컴포지션 api -->
+
+<div id="app">
+  <!-- 자식 컴포넌트에서 refresh 이벤트를 받아 처리 -->
+  <app-contents @refresh="handleRefresh"></app-contents>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<script>
+  const { createApp, defineComponent, ref } = Vue;
+
+  // 자식 컴포넌트 정의
+  const AppContents = defineComponent({
+    emits: ["refresh"], // 자식에서 발생시킬 이벤트 정의
+    setup(_, { emit }) {
+      const sendEvent = () => {
+        emit("refresh"); // 부모로 이벤트 전파
+      };
+
+      return { sendEvent }; // 템플릿에서 사용 가능하도록 반환
+    },
+    template: `
+      <p>
+        <button @click="sendEvent">갱신</button>
+      </p>
+    `,
+  });
+
+  // 부모 컴포넌트 정의
+  const App = defineComponent({
+    components: { AppContents },
+    setup() {
+      const handleRefresh = () => {
+        alert("Refresh 이벤트가 발생했습니다!");
+      };
+
+      return { handleRefresh }; // 템플릿에서 사용 가능하도록 반환
+    },
+  });
+
+  // 애플리케이션 생성 및 마운트
+  createApp(App).mount("#app");
+</script>

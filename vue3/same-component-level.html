@@ -1,0 +1,52 @@
+<div id="app">
+  <app-header v-bind:app-title="message"></app-header>
+  <app-contents @click="updateMessage"></app-contents>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<script>
+  const { createApp, defineComponent, ref, toRefs } = Vue;
+
+  // 헤더 컴포넌트 정의
+  const appHeader = defineComponent({
+    props: {
+      appTitle: String, // 부모로부터 전달받을 데이터
+    },
+    setup(props) {
+      const { appTitle } = toRefs(props); // props를 반응형으로 변환
+      return { title: appTitle }; // 반응형으로 변환된 appTitle을 반환
+    },
+    template: `<h1>{{ title }}</h1>`, // props의 appTitle을 직접 사용
+  });
+
+  // 콘텐츠 컴포넌트 정의
+  const appContents = defineComponent({
+    emits: ["click"],
+    setup(_, { emit }) {
+      const sendEvent = () => {
+        emit("click"); // 부모 컴포넌트로 이벤트 전파
+      };
+      return { sendEvent };
+    },
+    template: `
+      <p>
+        <button @click="sendEvent">로그인</button>
+      </p>
+    `,
+  });
+
+  // 루트 컴포넌트 정의
+  const App = defineComponent({
+    setup() {
+      const message = ref("");
+      const updateMessage = () => {
+        message.value = "complete"; // 메시지 값 업데이트
+      };
+      return { message, updateMessage };
+    },
+    components: { appHeader, appContents },
+  });
+
+  createApp(App).mount("#app");
+</script>
