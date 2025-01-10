@@ -1,0 +1,31 @@
+<!--
+    Proxy 객체를 사용하면 원래 Object 대신 사용할 수 있는 객체를 만들지만,
+    이 객체의 속성 가져오기, 설정 및 정의와 같은 기본 객체 작업을 재정의할 수 있습니다.
+    프록시 객체는 일반적으로 속성 액세스를 기록하고, 입력의 유효성을 검사하고, 형식을 지정하거나, 삭제하는 데 사용됩니다.
+-->
+
+<div id="app"></div>
+
+<script>
+  const data = {
+    message: "hello",
+  };
+
+  const render = (sth) => {
+    let div = document.querySelector("#app");
+    div.innerHTML = sth;
+  };
+
+  let app = new Proxy(data, {
+    // 객체의 속성에 접근할 때 호출
+    get(target, prop) {
+      return target[prop];
+    },
+    // 객체의 속성에 값을 할당하려고 할 때 호출
+    set(target, prop, value) {
+      // 객체의 속성 값에 새로운 값을 할당
+      target[prop] = value;
+      render(value);
+    },
+  });
+</script>
