@@ -1,0 +1,31 @@
+<div id="app">
+  <h1>클래스 바인딩</h1>
+  <div v-bind:class="textClass">데이터 바인딩 예제</div>
+
+  <h1>아이디 바인딩</h1>
+  <div :id="sectionId">아이디 바인딩 예제</div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+  const { createApp, ref } = Vue;
+  createApp({
+    setup() {
+      const textClass = ref("primary");
+      const sectionId = ref("tab1");
+
+      return {
+        textClass,
+        sectionId,
+      };
+    },
+  }).mount("#app");
+</script>
+<style>
+  .primary {
+    color: coral;
+  }
+  #tab1 {
+    color: blue;
+  }
+</style>
