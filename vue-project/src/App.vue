@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <AppHeader :app-title="message" @change="changeTitle" />
 </template>
 
@@ -25,4 +25,33 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped></style> -->
+
+<template>
+  <div>{{ message }}</div>
+  <button @click="changedMessage">change</button>
+</template>
+
+<script lang="ts">
+import { useMessage } from './hooks/useMessage'
+export default {
+  // optionsAPI
+  // data() {
+  //   return {
+  //     message: 'hello',
+  //   }
+  // },
+  // methods: {
+  //   changedMessage() {
+  //     this.message = 'world'
+  //   },
+  // },
+
+  setup() {
+    const { changedMessage, message } = useMessage()
+    return { message, changedMessage }
+  },
+}
+</script>
+
+<style lang="scss" scoped></style>
